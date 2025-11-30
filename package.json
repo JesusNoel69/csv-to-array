@@ -9,13 +9,15 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onCommand:csv-to-array.runConverter"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "csv-to-array.helloWorld",
-        "title": "Hello World"
+        "command": "csv-to-array.runConverter",
+        "title": "Run converter csv to an array"
       }
     ]
   },
