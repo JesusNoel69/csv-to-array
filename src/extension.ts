@@ -80,6 +80,9 @@ function getWebviewContent(csvText: string): string {
       td:focus {
         outline: 2px solid #007acc;
       }
+	td.highlight {
+        background-color: #3b82f680;
+      }
       #toolbar {
         margin-bottom: 8px;
       }
@@ -229,9 +232,45 @@ function getWebviewContent(csvText: string): string {
       document.getElementById("menu").addEventListener("click", function () {
         dialog.showModal();
       });
+		const table = document.getElementById("grid");
+      table.addEventListener("click", function (event) {
+        const cell = event.target.closest("td");
+        if (!cell) {
+          return;
+        }
 
+        const rowIndex = Number(cell.dataset.row);
+        const colIndex = Number(cell.dataset.col);
+
+        console.log("Celda clickeada -> fila:", rowIndex, "columna:", colIndex);
+
+        const rows = table.querySelectorAll("tr");
+
+        rows.forEach(function (tr) {
+          tr.querySelectorAll("td").forEach(function (td) {
+            td.classList.remove("highlight");
+          });
+        });
+
+        rows.forEach(function (tr, rIdx) {
+          const tds = tr.querySelectorAll("td");
+          if (rIdx <= rowIndex && tds[colIndex]) {
+            tds[colIndex].classList.add("highlight");
+          }
+        });
+
+        const clickedRow = rows[rowIndex];
+        if (clickedRow) {
+          const tds = clickedRow.querySelectorAll("td");
+          tds.forEach(function (td, cIdx) {
+            if (cIdx <= colIndex) {
+              td.classList.add("highlight");
+            }
+          });
+        }
+      });
       function getTableValues() {
-        const table = document.getElementById("grid");
+        //const table = document.getElementById("grid");
         const rows = table.querySelectorAll("tr");
         const values = [];
 
