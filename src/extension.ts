@@ -44,6 +44,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(disposable);
 }
+
+//ToDo: fix this
+//this could be breake if you use a " or ' or ' these speial characters should't be used
 function getWebviewContent(csvText: string): string {
   const rows = csvText.split(/\r?\n/).filter((r) => r.length > 0);
 
@@ -53,14 +56,16 @@ function getWebviewContent(csvText: string): string {
       const tds = cells
         .map(
           (c, colIndex) =>
-            `<td contenteditable="true" data-row="${rowIndex}" data-col="${colIndex}">${c}</td>`
+            `<td contenteditable="true" data-row="${rowIndex}" data-col="${colIndex}" ${
+              rowIndex === 0 && colIndex === 0 ? 'class="first-cell"' : ""
+            } >${c}
+		 	
+		  </td>`
         )
         .join("");
       return `<tr>${tds}</tr>`;
     })
     .join("");
-  vscode.window.showInformationMessage(htmlRows);
-
   return /* html */ `
 <!DOCTYPE html>
 <html lang="en">
@@ -127,6 +132,27 @@ function getWebviewContent(csvText: string): string {
         display: flex;
         flex-direction: column;
         gap: 1rem;
+      }
+	#grid tr:first-child td {
+        position: sticky;
+        top: 0;
+        font-weight: bolder;
+		background: #0078d7;
+		color: black;
+		border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
+        z-index: 5;
+      }
+      .first-cell {
+        z-index: 6 !important;
+      }
+      #grid td:first-child {
+        position: sticky;
+        left: 0;
+        font-weight: bolder;
+        background: #0078d7;
+		color: black;
+		border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
+        z-index: 4;
       }
     </style>
   </head>
@@ -476,10 +502,9 @@ function getWebviewContent(csvText: string): string {
           const cells = Array.from(tr.querySelectorAll("td"));
           const values = cells.map(function (td) {
             let text = td.innerText.replace(/"/g, '""');
-            //this break the table because not continued to next items null
-            //if (text.includes(',') || text.includes('"') || text.includes('\\n')) {
-            //    text = '"' + text + '"';
-            //}
+            if (text.includes(',') || text.includes('"') || text.includes('\\n')) {
+                text = '"' + text + '"';
+            }
             return text;
           });
           rows.push(values.join(","));
