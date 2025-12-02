@@ -95,6 +95,31 @@ function getWebviewContent(csvText: string): string {
       button {
         margin-right: 4px;
       }
+	  button {
+        background: #0078d7;
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        margin-right: 6px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+        transition: background 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      button:hover {
+        background: #006bbf;
+      }
+
+      button:active {
+        background: #005fa8;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25);
+      }
+
+      button:disabled {
+        background: #9bbdd8;
+        cursor: default;
+      }
       output {
         width: 100%;
       }
@@ -138,7 +163,7 @@ function getWebviewContent(csvText: string): string {
         top: 0;
         font-weight: bolder;
 		background: #0078d7;
-		color: black;
+		color: white;
 		border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
         z-index: 5;
       }
@@ -150,7 +175,7 @@ function getWebviewContent(csvText: string): string {
         left: 0;
         font-weight: bolder;
         background: #0078d7;
-		color: black;
+		color: white;
 		border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
         z-index: 4;
       }
@@ -158,8 +183,29 @@ function getWebviewContent(csvText: string): string {
   </head>
 <body>
     <div id="toolbar">
-        <button id="save">Guardar CSV</button>
-        <button id="menu">Menu CSV</button>
+        <button id="save" style="border: none; background: none; cursor: pointer">
+        <svg width="30" height="30" viewBox="0 0 30 28" fill="none">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M23.464 3.205h-20.259v25.59h25.59v-20.259l-5.331-5.331zM21.331 4.271v7.464h-10.662v-7.464h10.662zM27.729 27.729h-23.457v-23.457h5.331v8.53h12.795v-8.53h0.625l4.706 4.707v18.751z"
+            fill="#0078d7"
+          ></path>
+          <path
+            d="M18.153 6.404h1.066v3.199h-1.066v-3.199z"
+            fill="#0078d7"
+          ></path>
+          <path
+            d="M10.669 20.265h10.662v1.066h-10.662v-1.066z"
+            fill="#0078d7"
+          ></path>
+          <path
+            d="M10.669 23.464h10.662v1.066h-10.662v-1.066z"
+            fill="#0078d7"
+          ></path>
+        </svg>
+      </button>
+        <button id="menu">Menu</button>
         <button id="add-row">Agregar fila</button>
         <button id="add-col">Agregar columna</button>
     </div>
