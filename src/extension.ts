@@ -59,6 +59,7 @@ function getWebviewContent(csvText: string): string {
       return `<tr>${tds}</tr>`;
     })
     .join("");
+  vscode.window.showInformationMessage(htmlRows);
 
   return /* html */ `
 <!DOCTYPE html>
@@ -188,7 +189,7 @@ function getWebviewContent(csvText: string): string {
     </table>
 
     <script>
-      //const vscode = acquireVsCodeApi();
+      const vscode = acquireVsCodeApi();
       /*const csharpVersions = [1.0, 3.0, 9.0];
       const languages = ["C#"];
       */
