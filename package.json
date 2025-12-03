@@ -1,13 +1,21 @@
 {
   "name": "csv-to-array",
-  "displayName": "csv-to-array",
-  "description": "",
+  "displayName": "CSV to Array",
+  "description": "Convert CSV files into C# arrays using an interactive table editor.",
   "version": "0.0.1",
+  "publisher": "jesusnoel",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JesusNoel69/csv-to-array"
+  },
   "engines": {
     "vscode": "^1.106.1"
   },
   "categories": [
-    "Other"
+    "Other",
+    "Programming Languages",
+    "Formatters"
   ],
   "activationEvents": [
     "onCommand:csv-to-array.runConverter"
