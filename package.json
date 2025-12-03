@@ -21,6 +21,13 @@
       }
     ]
   },
+  "files": [
+    "images",
+    "out",
+    "dist",
+    "media",
+    "src"
+  ],
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
