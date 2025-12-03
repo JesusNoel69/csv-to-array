@@ -1,9 +1,8 @@
 # Change Log
 
-All notable changes to the "csv-to-array" extension will be documented in this file.
+## 0.0.1
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+- Initial release of CSV to Array
+- Added webview table
+- Added generation of 2D arrays and vectors
+- Added clipboard support
