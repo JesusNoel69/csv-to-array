@@ -34,7 +34,9 @@
     "out",
     "dist",
     "media",
-    "src"
+    "src",
+    "webview",
+    "src/webview"
   ],
   "scripts": {
     "vscode:prepublish": "npm run package",
