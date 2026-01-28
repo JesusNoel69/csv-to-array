@@ -1,5 +1,4 @@
 import * as vscode from "vscode";
-import { readFileSync } from "fs";
 import htmlBodyContent from "./webview/body";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -20,30 +19,13 @@ export function activate(context: vscode.ExtensionContext) {
       const fileData = await vscode.workspace.fs.readFile(fileUri);
       const text = Buffer.from(fileData).toString("utf8");
 
-      // webview
-      /*const webviewFolder = vscode.Uri.joinPath(
-        context.extensionUri,
-        "webview",
-      );*/
       const webviewFolder = vscode.Uri.joinPath(
         context.extensionUri,
-        "src",
         "webview",
       );
 
       const cssFile = vscode.Uri.joinPath(webviewFolder, "styles.css");
       const mainJsFile = vscode.Uri.joinPath(webviewFolder, "main.js");
-
-      /*try {
-        await vscode.workspace.fs.stat(cssFile);
-        vscode.window.showInformationMessage(
-          "CSS existe: " + cssFile.toString(),
-        );
-      } catch {
-        vscode.window.showErrorMessage(
-          "NO existe CSS en: " + cssFile.toString(),
-        );
-      }*/
 
       const panel = vscode.window.createWebviewPanel(
         "csvTableView",
@@ -60,7 +42,7 @@ export function activate(context: vscode.ExtensionContext) {
       );
       const mainJsUri = panel.webview.asWebviewUri(mainJsFile);
 
-      vscode.window.showInformationMessage(cssUri.toString());
+      //vscode.window.showInformationMessage(cssUri.toString());
       //html table
       panel.webview.html = getWebviewContent(
         text,
