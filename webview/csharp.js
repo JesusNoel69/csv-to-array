@@ -1,3 +1,5 @@
+import { isEmpty, normalizeRows, quote, getMatrixType } from "./utils.js";
+
 export function toCSharpMatrix(values, allowFirsts, versionSelect) {
   const csVersion = getCsVersion(versionSelect);
   const isModern = csVersion >= 12;
@@ -5,7 +7,7 @@ export function toCSharpMatrix(values, allowFirsts, versionSelect) {
 
   const bodyRows = normalizeRows(values, allowFirsts);
   const matrixType = getMatrixType(bodyRows);
-  const typeCs = mapType(matrixType);
+  const typeCs = mapType(matrixType, "cs");
 
   const rowsCs = bodyRows.map((row) =>
     renderRow(row, matrixType, typeCs, isModern),
@@ -24,41 +26,6 @@ export function toCSharpMatrix(values, allowFirsts, versionSelect) {
 function getCsVersion(versionSelect) {
   const n = Number(versionSelect?.value);
   return Number.isFinite(n) ? n : NaN;
-}
-
-function normalizeRows(values, allowFirsts) {
-  const startRow = allowFirsts ? 1 : 0;
-  const startCol = allowFirsts ? 1 : 0;
-
-  let rows = values
-    .slice(startRow)
-    .map((row) => row.slice(startCol))
-    .filter((row) => row.some((cell) => !isEmpty(cell)));
-
-  // remove empty columns
-  if (rows.length === 0) {
-    return rows;
-  }
-
-  const colCount = rows[0].length;
-  const keep = new Array(colCount).fill(false);
-
-  for (const row of rows) {
-    for (let c = 0; c < colCount; c++) {
-      if (!keep[c] && !isEmpty(row[c])) {
-        keep[c] = true;
-      }
-    }
-  }
-
-  const colsToKeep = [];
-  for (let c = 0; c < colCount; c++) {
-    if (keep[c]) {
-      colsToKeep.push(c);
-    }
-  }
-
-  return rows.map((row) => colsToKeep.map((c) => row[c]));
 }
 
 function renderRow(row, matrixType, typeCs, isModern) {
@@ -87,45 +54,14 @@ function renderDeclaration(typeCs, isModern, useVar) {
   };
 }
 
-function mapType(matrixType) {
-  switch (matrixType) {
-    case "int":
-      return "int";
-    case "double":
-      return "double";
-    case "bool":
-      return "bool";
-    default:
-      return "string";
-  }
-}
+function mapType(matrixType, type) {
+  const TYPE_MAP = {
+    cs: { integer: "int", float: "double", boolean: "bool", string: "string" },
+    c: { integer: "int", float: "double", boolean: "bool", string: "char*" },
+  };
 
-function getMatrixType(bodyRows) {
-  let type = null;
-
-  for (const row of bodyRows) {
-    for (const cellRaw of row) {
-      const t = inferCellType(cellRaw);
-      if (t === "null") {
-        continue;
-      }
-
-      if (!type) {
-        type = t;
-      } else if (type !== t) {
-        if (
-          (type === "int" && t === "double") ||
-          (type === "double" && t === "int")
-        ) {
-          type = "double";
-        } else {
-          return "string";
-        }
-      }
-    }
-  }
-
-  return type ?? "string";
+  const langType = TYPE_MAP[type] ?? TYPE_MAP.cs;
+  return langType[matrixType] ?? langType.string ?? "string";
 }
 
 function formatValueForCSharp(v, matrixType) {
@@ -136,47 +72,19 @@ function formatValueForCSharp(v, matrixType) {
   const s = String(v).trim();
 
   switch (matrixType) {
-    case "int": {
+    case "integer": {
       const n = parseInt(s, 10);
       return Number.isNaN(n) ? quote(s) : String(n);
     }
-    case "double": {
+    case "float": {
       const num = Number(s.replace(",", "."));
       return Number.isNaN(num) ? quote(s) : String(num);
     }
-    case "bool": {
+    case "boolean": {
       const lower = s.toLowerCase();
       return lower === "true" ? "true" : "false";
     }
-    default:
+    default: //string type default
       return quote(s);
   }
-}
-
-function quote(s) {
-  return `"${String(s).replace(/"/g, '\\"')}"`;
-}
-
-function isEmpty(v) {
-  return String(v ?? "").trim() === "";
-}
-
-function inferCellType(v) {
-  if (isEmpty(v)) {
-    return "null";
-  }
-
-  const s = String(v).trim();
-  const lower = s.toLowerCase();
-
-  if (lower === "true" || lower === "false") {
-    return "bool";
-  }
-  if (/^[+-]?\d+$/.test(s)) {
-    return "int";
-  }
-  if (/^[+-]?\d*\.\d+$/.test(s)) {
-    return "double";
-  }
-  return "string";
 }
