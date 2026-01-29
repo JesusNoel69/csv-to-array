@@ -87,3 +87,13 @@ export function inferCellType(v) {
   }
   return "string";
 }
+
+export function mapType(matrixType, type) {
+  const TYPE_MAP = {
+    cs: { integer: "int", float: "double", boolean: "bool", string: "string" },
+    c: { integer: "int", float: "double", boolean: "bool", string: "char*" },
+  };
+
+  const langType = TYPE_MAP[type] ?? TYPE_MAP.cs;
+  return langType[matrixType] ?? langType.string ?? "string";
+}
