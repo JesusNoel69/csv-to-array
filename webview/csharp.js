@@ -4,10 +4,11 @@ import {
   quote,
   getMatrixType,
   mapType,
+  getVersion,
 } from "./utils.js";
 
 export function toCSharpMatrix(values, allowFirsts, versionSelect) {
-  const csVersion = getCsVersion(versionSelect);
+  const csVersion = getVersion(versionSelect);
   const isModern = csVersion >= 12;
   const useVar = csVersion >= 3 && !isModern;
 
@@ -16,7 +17,7 @@ export function toCSharpMatrix(values, allowFirsts, versionSelect) {
   const typeCs = mapType(matrixType, "cs");
 
   const rowsCs = bodyRows.map((row) =>
-    renderRow(row, matrixType, typeCs, isModern),
+    renderCsRow(row, matrixType, typeCs, isModern),
   );
 
   const header = `// C# version: ${Number.isFinite(csVersion) ? csVersion : "unknown"}\n`;
@@ -29,12 +30,7 @@ export function toCSharpMatrix(values, allowFirsts, versionSelect) {
   return header + declarationPrefix + rowsCs.join(",\n") + closing;
 }
 
-function getCsVersion(versionSelect) {
-  const n = Number(versionSelect?.value);
-  return Number.isFinite(n) ? n : NaN;
-}
-
-function renderRow(row, matrixType, typeCs, isModern) {
+function renderCsRow(row, matrixType, typeCs, isModern) {
   const items = row.map((v) => formatValueForCSharp(v, matrixType)).join(", ");
   return isModern ? `    [${items}]` : `    new ${typeCs}[] { ${items} }`;
 }

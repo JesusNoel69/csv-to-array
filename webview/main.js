@@ -1,9 +1,11 @@
+import { toCMatrix } from "./c.js";
 import { toCSharpMatrix } from "./csharp.js";
 
 const vscode = acquireVsCodeApi();
 
 const versionsByLanguage = {
   "C#": [1.0, 12.0],
+  C: [90, 99, 11],
 };
 
 let matrixTextCopied = "";
@@ -126,9 +128,12 @@ function getTableValues(table) {
   return values;
 }
 
-function convertToArray({ table, firsts, selectVersion }) {
+function convertToArray({ table, firsts, selectVersion, selectLanguage }) {
   const values = getTableValues(table);
   const allowFirsts = !firsts.checked;
+  if (selectLanguage.value === "C") {
+    return toCMatrix(values, allowFirsts, selectVersion);
+  }
   return toCSharpMatrix(values, allowFirsts, selectVersion);
 }
 

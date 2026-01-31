@@ -91,9 +91,14 @@ export function inferCellType(v) {
 export function mapType(matrixType, type) {
   const TYPE_MAP = {
     cs: { integer: "int", float: "double", boolean: "bool", string: "string" },
-    c: { integer: "int", float: "double", boolean: "bool", string: "char*" },
+    c: { integer: "int", float: "float", boolean: "bool", string: "char*" },
   };
 
   const langType = TYPE_MAP[type] ?? TYPE_MAP.cs;
   return langType[matrixType] ?? langType.string ?? "string";
+}
+
+export function getVersion(versionSelect) {
+  const n = Number(versionSelect?.value);
+  return Number.isFinite(n) ? n : NaN;
 }
