@@ -1,7 +1,7 @@
 {
   "name": "csv-to-array",
   "displayName": "CSV to Array",
-  "description": "Convert CSV files into C# arrays using an interactive table editor.",
+  "description": "Convert CSV files into C/C# arrays using an interactive table editor.",
   "version": "0.0.4",
   "publisher": "jesusnoel",
   "icon": "images/icon.png",

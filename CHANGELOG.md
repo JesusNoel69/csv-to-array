@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.5
+
+- Added support for C (C90, C99, C11)
+
+## 0.0.4
+
+- Documentation cleanup and clarifications
+
 ## 0.0.3
 
 - Updated README to reflect jagged array (`T[][]`) output

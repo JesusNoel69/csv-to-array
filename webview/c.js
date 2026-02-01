@@ -16,7 +16,6 @@ export function toCMatrix(values, allowFirsts, versionSelect) {
   const decls = bodyRows.map((row, i) =>
     renderCRow(row, matrixType, typeC, cVersion, i),
   );
-  console.log(typeC);
   const arrays = decls.map((d) => d.array);
   const names = decls.map((d) => d?.name);
 
@@ -32,13 +31,15 @@ export function toCMatrix(values, allowFirsts, versionSelect) {
     const rowLength = bodyRows[0].length;
 
     //arrays should be filler and declaration returns a for statement for create
-    return header + declaration + "\n" + arrays.join("\n") + c99Free(rowLength);
+    return header + declaration + "\n" + arrays.join("\n") + cFree(rowLength);
   } else if (cVersion === 11) {
     declaration = renderC11Declaration(bodyRows, typeC);
-    return header + declaration + "\n" + arrays.join("\n");
+    const rowLength = bodyRows[0].length;
+
+    return header + declaration + "\n" + arrays.join("\n") + cFree(rowLength);
   }
 }
-function c99Free(length) {
+function cFree(length) {
   return `//use matrix before free\nfor (int i = 0; i < ${length}; i++) free(matrix[i]);\n free(matrix);\n`;
 }
 function renderC90Declaration(names, type) {
@@ -65,7 +66,6 @@ function renderCRow(row, matrixType, typeC, version, count) {
     return { array: `${typeC} ${name}[] = { ${items} };`, name };
   } else if (version === 99 || version === 11) {
     let arrayValue = "";
-    console.log(formatedRow);
     for (let index = 0; index < elemCount; index++) {
       arrayValue += `matrix[${count}][${index}] =${formatedRow[index]};\n`;
     }
@@ -91,7 +91,7 @@ function formatValueForC(v, matrixType) {
     }
     case "boolean": {
       const lower = s.toLowerCase();
-      return lower === "true" ? "true" : "false";
+      return lower === "true" ? "1" : "0";
     }
     default:
       return quote(s);
