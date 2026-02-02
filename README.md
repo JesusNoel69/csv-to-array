@@ -177,6 +177,17 @@ free(matrix);
 - Cleaner and more idiomatic C# output
 - Improved compatibility with real-world C# codebases
 
+### 0.0.5
+
+- Added **C language support** with jagged matrix generation
+  - C90: static row arrays with pointer matrix
+  - C99: dynamic allocation using `malloc`
+  - C11: dynamic allocation using `calloc`
+- Unified matrix generation using **jagged structures** across languages
+- Improved type inference for C and C#
+- Added language/version selector to code generation
+- Updated README with detailed multi-language examples
+
 ---
 
 > 💡 Why jagged arrays?
