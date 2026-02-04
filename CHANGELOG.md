@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.6
+
+- Added support for JavaScript (ES6 / ES2015 or higher)
+
 ## 0.0.5
 
 - Added support for C (C90, C99, C11)

@@ -92,6 +92,7 @@ export function mapType(matrixType, type) {
   const TYPE_MAP = {
     cs: { integer: "int", float: "double", boolean: "bool", string: "string" },
     c: { integer: "int", float: "float", boolean: "bool", string: "char*" },
+    js: { integer: "", float: "", boolean: "", string: "" },
   };
 
   const langType = TYPE_MAP[type] ?? TYPE_MAP.cs;

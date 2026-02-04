@@ -71,7 +71,7 @@ This project was originally designed to convert CSV-based automaton representati
 };
 </span></span></code></div></div></pre>
 
-### Generated C# (collection syntax)
+### Generated C# matrix (collection syntax)
 
 <pre class="overflow-visible!" data-start="573" data-end="657"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-csharp"><span><span>int</span><span>[][] matrix =
 [
@@ -142,6 +142,16 @@ for (int i = 0; i < 3; i++)
 free(matrix);
 </span></span></code></div></div></pre>
 
+### Generated JavaScript matrix (collection syntax)
+
+<pre class="overflow-visible!" data-start="573" data-end="657"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-csharp"><span><span>const</span><span> matrix =
+[
+    [ </span><span>1</span><span>, </span><span>2</span><span>, </span><span>3</span><span> ],
+    [ </span><span>4</span><span>, </span><span>5</span><span>, </span><span>6</span><span> ],
+    [ </span><span>7</span><span>, </span><span>8</span><span>, </span><span>9</span><span> ],
+];
+</span></span></code></div></div></pre>
+
 ---
 
 ## 📦 Requirements
@@ -187,6 +197,12 @@ free(matrix);
 - Improved type inference for C and C#
 - Added language/version selector to code generation
 - Updated README with detailed multi-language examples
+
+### 0.0.6
+
+- Added **JavaScript language support**
+- Added language/version selector to code generation
+- Updated README with examples for JavaScript
 
 ---
 
