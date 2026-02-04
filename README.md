@@ -1,6 +1,6 @@
 # csv-to-array
 
-`csv-to-array` is a Visual Studio Code extension that converts CSV files into ready-to-use **matix structures** for diffferent programming languages (C/C#).
+`csv-to-array` is a Visual Studio Code extension that converts CSV files into ready-to-use **matix structures** for diffferent programming languages (C/C#/JavaScript).
 
 It displays your CSV in an interactive spreadsheet-like editor, lets you modify
 the data, and generates clean, idiomatic code depending on the selected language
