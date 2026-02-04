@@ -1,6 +1,7 @@
 import { toCMatrix } from "./c.js";
 import { toCSharpMatrix } from "./csharp.js";
 import { toJsMatrix } from "./js.js";
+import { toPythonMatrix } from "./python.js";
 
 const vscode = acquireVsCodeApi();
 
@@ -8,6 +9,7 @@ const versionsByLanguage = {
   "C#": [1.0, 12.0],
   C: [90, 99, 11],
   JavaScript: ["ES6/ES2015"],
+  Python: ["2.x+"],
 };
 
 let matrixTextCopied = "";
@@ -137,6 +139,8 @@ function convertToArray({ table, firsts, selectVersion, selectLanguage }) {
     return toCMatrix(values, allowFirsts, selectVersion);
   } else if (selectLanguage.value === "JavaScript") {
     return toJsMatrix(values, allowFirsts);
+  } else if (selectLanguage.value === "Python") {
+    return toPythonMatrix(values, allowFirsts);
   }
   return toCSharpMatrix(values, allowFirsts, selectVersion);
 }

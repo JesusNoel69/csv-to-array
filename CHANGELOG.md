@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.7
+
+- Added support for Python (2.x or higher)
+
 ## 0.0.6
 
 - Added support for JavaScript (ES6 / ES2015 or higher)

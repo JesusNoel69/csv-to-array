@@ -1,6 +1,6 @@
 # csv-to-array
 
-`csv-to-array` is a Visual Studio Code extension that converts CSV files into ready-to-use **matix structures** for diffferent programming languages (C/C#/JavaScript).
+`csv-to-array` is a Visual Studio Code extension that converts CSV files into ready-to-use **matix structures** for diffferent programming languages (C/C#/JavaScript/Python).
 
 It displays your CSV in an interactive spreadsheet-like editor, lets you modify
 the data, and generates clean, idiomatic code depending on the selected language
@@ -25,14 +25,15 @@ This project was originally designed to convert CSV-based automaton representati
 - 🌐 **Multi-language support**
   - C# (jagged arrays `T[][]`)
   - C (C90 / C99 / C11 jagged matrices)
-  - More languages planned
+  - JavaScript
+  - Python
 
 - 🧾 **Header handling**
   - Ignore first row as header (optional)
   - Ignore first column as header (optional)
 
 - 📋 **Copy to clipboard**
-  - One-click button to copy the generated C# code.
+  - One-click button to copy the generated code.
 
 - 🔢 **Type inference**
   - Automatically detects integers, floating-point values, booleans and strings
@@ -142,7 +143,7 @@ for (int i = 0; i < 3; i++)
 free(matrix);
 </span></span></code></div></div></pre>
 
-### Generated JavaScript matrix (collection syntax)
+### Generated JavaScript matrix (ES6/ES2015 or higher)
 
 <pre class="overflow-visible!" data-start="573" data-end="657"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-csharp"><span><span>const</span><span> matrix =
 [
@@ -150,6 +151,16 @@ free(matrix);
     [ </span><span>4</span><span>, </span><span>5</span><span>, </span><span>6</span><span> ],
     [ </span><span>7</span><span>, </span><span>8</span><span>, </span><span>9</span><span> ],
 ];
+</span></span></code></div></div></pre>
+
+### Generated Python matrix (2. or higher)
+
+<pre class="overflow-visible!" data-start="573" data-end="657"><div class="contain-inline-size rounded-2xl corner-superellipse/1.1 relative bg-token-sidebar-surface-primary"><div class="sticky top-9"><div class="absolute end-0 bottom-0 flex h-9 items-center pe-2"><div class="bg-token-bg-elevated-secondary text-token-text-secondary flex items-center gap-4 rounded-sm px-2 font-sans text-xs"></div></div></div><div class="overflow-y-auto p-4" dir="ltr"><code class="whitespace-pre! language-csharp"><span><span></span><span> matrix =
+[
+    [ </span><span>1</span><span>, </span><span>2</span><span>, </span><span>3</span><span> ],
+    [ </span><span>4</span><span>, </span><span>5</span><span>, </span><span>6</span><span> ],
+    [ </span><span>7</span><span>, </span><span>8</span><span>, </span><span>9</span><span> ],
+]
 </span></span></code></div></div></pre>
 
 ---
@@ -165,7 +176,6 @@ free(matrix);
 
 - Large CSVs may take longer to render.
 - Mixed data types may require manual cleanup.
-- Only C# jagged array generation (`T[][]`) is supported.
 - Speially characters for strings is not supported yet.
 
 ---
@@ -203,6 +213,12 @@ free(matrix);
 - Added **JavaScript language support**
 - Added language/version selector to code generation
 - Updated README with examples for JavaScript
+
+### 0.0.7
+
+- Added **Python language support**
+- Added language/version selector to code generation
+- Updated README with examples for Python
 
 ---
 
