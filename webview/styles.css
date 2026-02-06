@@ -134,9 +134,16 @@ form {
   cursor: pointer;
 }
 
+#grid td.col-header,
+#grid td.row-header,
+#grid td.corner {
+  position: relative;
+  padding-right: 22px; /*spac for delte button*/
+}
+
 .del-row,
 .del-col {
-  width: 18px;
+  width: 36x;
   height: 18px;
   padding: 0;
   border: 0;
