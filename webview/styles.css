@@ -2,6 +2,7 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
 body {
   display: flex;
   justify-content: space-between;
@@ -16,7 +17,7 @@ body {
 td {
   border: 1px solid #ccc;
   padding: 4px;
-  min-width: 80px;
+  min-width: 20px;
 }
 td:focus {
   outline: 2px solid #007acc;
@@ -100,6 +101,7 @@ form {
   position: sticky;
   top: 0;
   font-weight: bolder;
+  height: 10px;
   background: #0078d7;
   color: white;
   border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
@@ -116,4 +118,41 @@ form {
   color: white;
   border-bottom: 1px solid var(--vscode-editorLineNumber-foreground);
   z-index: 4;
+}
+
+.col-header,
+.row-header,
+.corner {
+  user-select: none;
+}
+
+.header-text {
+  /*margin-left: 4px;*/
+}
+.edit-col-mode #grid td[data-row="0"] {
+  /*outline: 2px dashed #0078d7;*/
+  cursor: pointer;
+}
+
+.del-row,
+.del-col {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  color: red;
+}
+
+.edit-col-mode .del-row,
+.edit-col-mode .del-col {
+  opacity: 1;
+  pointer-events: auto;
 }

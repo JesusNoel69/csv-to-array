@@ -51,11 +51,20 @@ export function activate(context: vscode.ExtensionContext) {
         mainJsUri,
       );
       panel.webview.onDidReceiveMessage(async (message) => {
-        if (message.command === "saveCsv") {
-          const updatedCsv = message.data as string;
-          const enc = new TextEncoder();
-          await vscode.workspace.fs.writeFile(fileUri, enc.encode(updatedCsv));
-          vscode.window.showInformationMessage("CSV guardado desde la tabla");
+        if (!message || typeof message !== "object") {
+          return;
+        }
+        const data = message.data.replace(/🗑/g, "");
+        switch (message.command) {
+          case "saveCsv": {
+            if (typeof data !== "string") {
+              return;
+            }
+            const enc = new TextEncoder();
+            await vscode.workspace.fs.writeFile(fileUri, enc.encode(data));
+            vscode.window.showInformationMessage("CSV saved from the table");
+            break;
+          }
         }
       });
     },
@@ -73,20 +82,40 @@ function getWebviewContent(
   mainJsUri: vscode.Uri,
 ): string {
   const rows = csvText.split(/\r?\n/).filter((r) => r.length > 0);
-
   const htmlRows = rows
     .map((row, rowIndex) => {
       const cells = row.split(",");
       const tds = cells
-        .map(
-          (c, colIndex) =>
-            `<td contenteditable="true" data-row="${rowIndex}" data-col="${colIndex}" ${
-              rowIndex === 0 && colIndex === 0 ? 'class="first-cell"' : ""
-            } >${c}
-		 	
-		  </td>`,
-        )
+        .map((c, colIndex) => {
+          const isTopHeader = rowIndex === 0;
+          const isLeftHeader = colIndex === 0;
+          const isCorner = colIndex === 0 && rowIndex === 0;
+
+          if (isCorner) {
+            return `<td contenteditable="true" data-row="${rowIndex}" data-col="${colIndex}">${c}</td>`;
+          }
+          if (isTopHeader) {
+            return `
+                <td class="col-header" data-row="0" data-col="${colIndex}">
+                  <span class="header-text">${c}</span>
+                  <button class="del-col" data-col="${colIndex}" title="Delete column">🗑</button>
+                </td>
+              `;
+          }
+
+          if (isLeftHeader) {
+            return `
+              <td class="row-header" data-row="${rowIndex}" data-col="0">
+                <span class="header-text">${c}</span>
+                <button class="del-row" data-row="${rowIndex}" title="Delete row">🗑</button>
+              </td>
+            `;
+          }
+
+          return `<td contenteditable="true" data-row="${rowIndex}" data-col="${colIndex}">${c}</td>`;
+        })
         .join("");
+
       return `<tr>${tds}</tr>`;
     })
     .join("");
@@ -104,7 +133,9 @@ function getWebviewContent(
 <body>
   ${htmlBodyContent()}
     <table id="grid">
+      <tbody>
         ${htmlRows}
+      </tbody>
     </table>
     <script nonce="${nonce}" type="module" src="${mainJsUri}"></script>
 </body>

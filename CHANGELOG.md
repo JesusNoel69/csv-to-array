@@ -1,5 +1,10 @@
 # Change Log
 
+### 0.0.8
+
+- Added **Delete rows and columns support**
+- Added edit mode
+
 ## 0.0.7
 
 - Added support for Python (2.x or higher)

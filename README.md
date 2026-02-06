@@ -220,6 +220,11 @@ free(matrix);
 - Added language/version selector to code generation
 - Updated README with examples for Python
 
+### 0.0.8
+
+- Added **Delete rows and columns support**
+- Added edit mode
+
 ---
 
 > 💡 Why jagged arrays?

@@ -14,6 +14,8 @@ const versionsByLanguage = {
 
 let matrixTextCopied = "";
 
+let editColMode = false;
+
 document.addEventListener("DOMContentLoaded", () => {
   const el = getElementsOrNull();
   if (!el) {
@@ -25,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function getElementsOrNull() {
   const el = {
+    editColBtn: document.getElementById("edit-col"),
+
     dialog: document.getElementById("menu-dialog"),
     menuBtn: document.getElementById("menu"),
     table: document.getElementById("grid"),
@@ -43,6 +47,7 @@ function getElementsOrNull() {
   };
 
   const required = [
+    el.editColBtn,
     el.dialog,
     el.menuBtn,
     el.table,
@@ -76,7 +81,41 @@ function initLanguageVersion({ selectLanguage, selectVersion }) {
 }
 
 function wireEvents(el) {
+  /**/
+  document.addEventListener("click", (e) => {
+    if (!editColMode) {
+      return;
+    }
+
+    const rowBtn = e.target.closest(".del-row");
+    if (rowBtn) {
+      const r = Number(rowBtn.dataset.row);
+      deleteRow(r);
+      reindexGrid();
+      return;
+    }
+
+    const colBtn = e.target.closest(".del-col");
+    if (colBtn) {
+      const c = Number(colBtn.dataset.col);
+      deleteCol(c);
+      reindexGrid();
+      return;
+    }
+  });
+
+  /**/
   el.menuBtn.addEventListener("click", () => el.dialog.showModal());
+
+  el.editColBtn.addEventListener("click", () => {
+    editColMode = !editColMode;
+
+    document.body.classList.toggle("edit-col-mode", editColMode);
+
+    el.editColBtn.textContent = editColMode
+      ? "Edit column (ON)"
+      : "Edit column";
+  });
 
   // table click
   el.table.addEventListener("click", (event) => {
@@ -84,7 +123,20 @@ function wireEvents(el) {
     if (!cell) {
       return;
     }
-    highlight(el.table, Number(cell.dataset.row), Number(cell.dataset.col));
+
+    const r = Number(cell.dataset.row);
+    const c = Number(cell.dataset.col);
+
+    if (editColMode && r === 0) {
+      if (c === 0) {
+        return;
+      }
+
+      openColumnEditor(el.table, c);
+      return;
+    }
+
+    highlight(el.table, r, c);
   });
 
   el.saveBtn.addEventListener("click", () => {
@@ -107,6 +159,71 @@ function wireEvents(el) {
       });
     }
   });
+}
+
+function deleteRow(r) {
+  const table = document.getElementById("grid");
+  const tr = table?.querySelectorAll("tr")[r];
+  if (tr) {
+    tr.remove();
+  }
+}
+
+function deleteCol(c) {
+  const table = document.getElementById("grid");
+  if (!table) {
+    return;
+  }
+
+  table.querySelectorAll("tr").forEach((tr) => {
+    const td = tr.querySelectorAll("td")[c];
+    if (td) {
+      td.remove();
+    }
+  });
+}
+
+function reindexGrid() {
+  const table = document.getElementById("grid");
+  if (!table) {
+    return;
+  }
+
+  const trs = Array.from(table.querySelectorAll("tr"));
+  trs.forEach((tr, r) => {
+    const tds = Array.from(tr.querySelectorAll("td"));
+    tds.forEach((td, c) => {
+      td.dataset.row = String(r);
+      td.dataset.col = String(c);
+
+      const rb = td.querySelector(".del-row");
+      if (rb) {
+        rb.dataset.row = String(r);
+      }
+
+      const cb = td.querySelector(".del-col");
+      if (cb) {
+        cb.dataset.col = String(c);
+      }
+    });
+  });
+}
+
+function openColumnEditor(table, colIndex) {
+  const headerCell = table.querySelector(
+    `td[data-row="0"][data-col="${colIndex}"]`,
+  );
+  if (!headerCell) {
+    return;
+  }
+
+  const current = (headerCell.innerText || "").trim();
+  const next = prompt(`New column name ${colIndex}:`, current);
+  if (next === null) {
+    return;
+  }
+
+  headerCell.innerText = next;
 }
 
 function fillOptions(selectEl, items) {

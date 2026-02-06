@@ -23,8 +23,9 @@ export default function htmlBodyContent() {
         </svg>
       </button>
         <button id="menu">Menu</button>
-        <button id="add-row">Agregar fila</button>
-        <button id="add-col">Agregar columna</button>
+        <button id="add-row">Add row</button>
+        <button id="add-col">Add column</button>
+        <button id="edit-col">Edit column</button>
     </div>
     `;
   const menu = `<dialog id="menu-dialog">
